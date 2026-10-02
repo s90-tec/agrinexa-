@@ -53,6 +53,8 @@ export type FarmField = {
   farm_id: string;
   name: string;
   area_acres: number;
+  soil_type?: string | null;
+  status?: string;
 };
 
 export type GeoFeature = {

@@ -1,36 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AgriNexa Frontend
 
-## Getting Started
+Responsive Next.js dashboard for the AgriNexa FastAPI service. The frontend does not connect to a database.
 
-First, run the development server:
+## Local development
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Start the backend using the instructions in `../backend/README.md`.
+2. Install dependencies with `npm install`.
+3. Optionally set `NEXT_PUBLIC_API_BASE_URL` to the backend API root. It defaults to `http://localhost:8000/api/v1`.
+4. Start the frontend with `npm run dev` and open `http://localhost:3000`.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The backend CORS allowlist must include the frontend origin. Login and registration return access and refresh tokens; the app keeps them in `sessionStorage`, rotates refresh tokens on reload, and clears the session on logout.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Checks
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run lint`
+- `npx tsc --noEmit`
+- `npm run build`
 
-## Learn More
+## API behavior
 
-To learn more about Next.js, take a look at the following resources:
+Resource clients under `lib/api/` unwrap the backend's `{ success, data, message }` response envelope. TanStack Query owns server data; React Hook Form and Zod validate authentication forms.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Dashboard values, field maps, alerts, finance totals, weather observations, satellite indices, and model results are never seeded in the UI. Empty or unavailable backend data is shown as such. The current backend exposes only latest satellite readings (not time-series trends), aggregate finance totals (not transaction history), and a context-only assistant (not an LLM). Disease inference, satellite observations, weather providers, and yield prediction require their configured backend integrations. Password reset and changing account settings are not currently exposed by the API.
